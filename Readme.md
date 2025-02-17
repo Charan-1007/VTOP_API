@@ -114,12 +114,7 @@ Contributions welcome! Please follow these steps:
 2. Create feature branch (`git checkout -b feature/improvement`)  
 3. Commit changes (`git commit -am 'Add new feature'`)  
 4. Push to branch (`git push origin feature/improvement`)  
-5. Open Pull Request  
-
----
-
-## License 📄  
-Distributed under MIT License. See `LICENSE` for more information.  
+5. Open Pull Request   
 
 ---
 
@@ -127,15 +122,3 @@ Distributed under MIT License. See `LICENSE` for more information.
 - Playwright team for browser automation tools  
 - FastAPI for modern Python web framework  
 - Open source community for continuous inspiration  
-
----
-
-### Notes on Image Badges 🖼️
-The badges used in this README are powered by **shields.io**. If the images don't render properly:
-1. Ensure you're viewing the README on a platform that supports Markdown image rendering (e.g., GitHub).  
-2. Check your internet connection, as the badges are loaded from an external source.  
-3. If you're using a local Markdown viewer, ensure it supports external images.  
-
----
-
-This version includes image badges and should work perfectly on platforms like GitHub. Let me know if you encounter any issues! 🚀
