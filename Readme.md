@@ -1,9 +1,4 @@
-If the logos are not appearing and only the text is visible, it's likely because the Markdown renderer you're using doesn't support inline images or badges. To fix this, you can either:
-
-1. **Use plain text badges** (without images) or
-2. **Ensure your Markdown renderer supports image rendering**.
-
-Here’s the updated README with plain text badges (no images):
+If you want to use images (like badges) in your README, you need to ensure that the Markdown renderer supports them. Most platforms like **GitHub**, **GitLab**, and modern Markdown editors (e.g., VS Code with Markdown extensions) support image rendering. Here's the updated README with working image badges:
 
 ---
 
@@ -11,10 +6,9 @@ Here’s the updated README with plain text badges (no images):
 
 A FastAPI-based service to programmatically retrieve academic data from VIT University's VTOP portal using web scraping techniques.
 
-**Built with:**  
-- FastAPI  
-- Python  
-- Playwright  
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)  
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)  
+![Playwright](https://img.shields.io/badge/Playwright-45ba4b?style=for-the-badge&logo=playwright&logoColor=white)  
 
 ---
 
@@ -124,7 +118,24 @@ Contributions welcome! Please follow these steps:
 
 ---
 
+## License 📄  
+Distributed under MIT License. See `LICENSE` for more information.  
+
+---
+
 ## Acknowledgments 🙏  
 - Playwright team for browser automation tools  
 - FastAPI for modern Python web framework  
 - Open source community for continuous inspiration  
+
+---
+
+### Notes on Image Badges 🖼️
+The badges used in this README are powered by **shields.io**. If the images don't render properly:
+1. Ensure you're viewing the README on a platform that supports Markdown image rendering (e.g., GitHub).  
+2. Check your internet connection, as the badges are loaded from an external source.  
+3. If you're using a local Markdown viewer, ensure it supports external images.  
+
+---
+
+This version includes image badges and should work perfectly on platforms like GitHub. Let me know if you encounter any issues! 🚀
