@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y \
     libxshmfence1 \
     libxfixes3 \
     libasound2
-RUN python -m playwright install
+RUN python -m playwright install-deps
 
 # Copy application code
 COPY . /app

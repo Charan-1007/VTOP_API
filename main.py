@@ -74,7 +74,7 @@ async def check_for_errors(page):
     Returns one of: "captcha", "login", "credentials", or None.
     """
     try:
-        body_text = await page.inner_text("body", timeout=500)
+        body_text = await page.inner_text("body", timeout=5000)
         if "Invalid Captcha" in body_text:
             return "captcha"
         elif "Invalid LoginId/Password" in body_text:
@@ -101,19 +101,19 @@ async def get_vtop_data(username: str, password: str, semIndex: Optional[int] = 
             
             # Navigate to the initial page
             await page.goto("https://vtop.vit.ac.in/vtop/content", wait_until="domcontentloaded")
-            await page.wait_for_selector("#stdForm", state="visible", timeout=5000)
+            await page.wait_for_selector("#stdForm", state="visible", timeout=50000)
             print("Login form loaded")
             
             # Click the login form and wait for navigation
-            async with page.expect_navigation(timeout=5000):
+            async with page.expect_navigation(timeout=50000):
                 await page.click("#stdForm")
-            await page.wait_for_selector(":has-text('VTOP Login')", state="visible", timeout=5000)
+            await page.wait_for_selector(":has-text('VTOP Login')", state="visible", timeout=50000)
             print("Login page fully loaded")
             
             # Wait for the captcha element
             while True:
                 try:
-                    await page.wait_for_selector("#captchaStr", state="visible", timeout=1000)
+                    await page.wait_for_selector("#captchaStr", state="visible", timeout=10000)
                     print("Captcha found. Proceeding with login.")
                     break
                 except PlaywrightTimeoutError:
@@ -128,7 +128,7 @@ async def get_vtop_data(username: str, password: str, semIndex: Optional[int] = 
             print("Solving Captcha...")
             await solve_captcha(page)
             try:
-                await page.wait_for_load_state("networkidle", timeout=3000)
+                await page.wait_for_load_state("networkidle", timeout=30000)
             except PlaywrightTimeoutError:
                 pass
             error_type = await check_for_errors(page)
@@ -139,7 +139,7 @@ async def get_vtop_data(username: str, password: str, semIndex: Optional[int] = 
                     for attempt in range(max_retries):
                         await solve_captcha(page)
                         try:
-                            await page.wait_for_load_state("networkidle", timeout=3000)
+                            await page.wait_for_load_state("networkidle", timeout=30000)
                         except PlaywrightTimeoutError:
                             pass
                         await asyncio.sleep(0.5)
