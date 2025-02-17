@@ -1,7 +1,3 @@
-If you want to use images (like badges) in your README, you need to ensure that the Markdown renderer supports them. Most platforms like **GitHub**, **GitLab**, and modern Markdown editors (e.g., VS Code with Markdown extensions) support image rendering. Here's the updated README with working image badges:
-
----
-
 # VTOP API 🚀
 
 A FastAPI-based service to programmatically retrieve academic data from VIT University's VTOP portal using web scraping techniques.
