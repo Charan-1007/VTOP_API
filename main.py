@@ -100,7 +100,7 @@ async def get_vtop_data(username: str, password: str, semIndex: Optional[int] = 
             page = await context.new_page()
             
             # Navigate to the initial page
-            await page.goto("https://vtop.vit.ac.in/vtop/content", wait_until="domcontentloaded")
+            await page.goto("https://vtop.vit.ac.in/vtop", wait_until="domcontentloaded")
             await page.wait_for_selector("#stdForm", state="visible", timeout=50000)
             print("Login form loaded")
             
