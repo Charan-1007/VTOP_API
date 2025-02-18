@@ -150,20 +150,24 @@ async def get_vtop_data(username: str, password: str, semIndex: Optional[int] = 
                         print(f"Retry {attempt+1} for captcha.")
                     else:
                         print("Max captcha retries exceeded. Exiting.")
+                        await context.clear_cookies()
                         await browser.close()
                         raise HTTPException(status_code=400, detail="Captcha solving failed.")
                 elif error_type in ("login", "credentials"):
                     print(f"Error: {error_type} issue detected. Please check your credentials.")
+                    await context.clear_cookies()
                     await browser.close()
                     raise HTTPException(status_code=401, detail="Invalid credentials.")
                 else:
                     print("Unknown error detected. Exiting.")
+                    await context.clear_cookies()
                     await browser.close()
                     raise HTTPException(status_code=500, detail="Unknown error occurred.")
             
             # Verify login by checking URL
             if not page.url.startswith("https://vtop.vit.ac.in/vtop/content"):
                 print("Login unsuccessful. Exiting.")
+                await context.clear_cookies()
                 await browser.close()
                 raise HTTPException(status_code=401, detail="Login failed.")
             
@@ -190,11 +194,14 @@ async def get_vtop_data(username: str, password: str, semIndex: Optional[int] = 
                 if data is not None:
                     Alldata[key] = data
             
+            await context.clear_cookies()
             await browser.close()
             return Alldata
             
         except Exception as e:
             print(f"Error during scraping: {e}")
+            await context.clear_cookies()
+            await browser.close()
             raise HTTPException(status_code=500, detail=f"Scraping failed: {str(e)}")
 
 @app.get("/vtopdata")
