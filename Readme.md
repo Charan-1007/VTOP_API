@@ -72,7 +72,7 @@ GET https://vtop-api-w1ux.onrender.com/vtopdata?username={username}&password={pa
 **Alternate URL:**
 
 ```http
-GET https://vtopapi-production.up.railway.app/vtopdata?username=username&password=password
+GET https://vtopapi-production.up.railway.app/vtopdata?username={username}&password={password}
 ```
 
 **Parameters:**
