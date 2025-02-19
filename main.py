@@ -4,10 +4,10 @@ import time
 import json
 from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeoutError
 import random
-import sys
 import asyncio
 import re
 from typing import Optional
+import aiohttp
 
 app = FastAPI()
 
@@ -88,14 +88,72 @@ async def check_for_errors(page):
         print(f"Error checking errors: {e}")
         return None
 
+# Function to fetch free proxies from a public API and filter for elite proxies with latency < 100ms
+async def fetch_elite_proxies():
+    url = "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=100&country=all&ssl=all&anonymity=elite"
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            if response.status == 200:
+                proxies = await response.text()
+                proxy_list = proxies.split("\r\n")  # Split the proxies by newline
+                
+                # Filter out empty strings
+                filtered_proxies = [proxy for proxy in proxy_list if proxy.strip()]
+                
+                # Test each proxy for latency < 100ms
+                valid_proxies = []
+                for proxy in filtered_proxies:
+                    if await test_proxy_latency(proxy):
+                        valid_proxies.append(proxy)
+                
+                if not valid_proxies:
+                    raise Exception("No valid elite proxies with latency < 100ms found.")
+                
+                return valid_proxies
+            else:
+                raise Exception("Failed to fetch proxies")
+
+# Function to test proxy latency
+async def test_proxy_latency(proxy):
+    test_url = "http://example.com"  # A lightweight URL to test latency
+    start_time = time.time()
+    
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(test_url, proxy=f"http://{proxy}", timeout=1) as response:
+                if response.status == 200:
+                    elapsed_time = (time.time() - start_time) * 1000  # Convert to milliseconds
+                    print(f"Proxy {proxy} latency: {elapsed_time:.2f}ms")
+                    return elapsed_time < 100  # Only keep proxies with latency < 100ms
+    except Exception:
+        pass  # Ignore proxies that fail or timeout
+    
+    return False
+
+# Function to rotate proxies
+def rotate_proxy(proxies):
+    if not proxies:
+        raise Exception("No proxies available")
+    return random.choice(proxies)
+
 async def get_vtop_data(username: str, password: str, semIndex: Optional[int] = None):
     Alldata = {}
     semId = None  # This will hold the actual semester ID after extraction
     
+    # Fetch elite proxies with latency < 100ms
+    proxies = await fetch_elite_proxies()
+    
     async with async_playwright() as p:
         try:
+            # Rotate through proxies
+            proxy = rotate_proxy(proxies)
+            print(f"Using proxy: {proxy}")
+            
             # Using headless mode to reduce rendering overhead
-            browser = await p.chromium.launch(headless=True)
+            browser = await p.chromium.launch(
+                headless=True,
+                proxy={"server": proxy}  # Use the selected proxy
+            )
             context = await browser.new_context(user_agent=random.choice(USER_AGENT_STRINGS))
             page = await context.new_page()
             
