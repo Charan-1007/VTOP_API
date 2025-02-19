@@ -90,7 +90,7 @@ async def check_for_errors(page):
 
 # Function to fetch free proxies from a public API and filter for elite proxies with latency < 100ms
 async def fetch_elite_proxies():
-    url = "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=100&country=all&ssl=all&anonymity=elite"
+    url = "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=500&country=all&ssl=all&anonymity=elite"
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
             if response.status == 200:
