@@ -4,10 +4,10 @@ import time
 import json
 from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeoutError
 import random
+import sys
 import asyncio
 import re
 from typing import Optional
-import aiohttp
 
 app = FastAPI()
 
@@ -88,41 +88,14 @@ async def check_for_errors(page):
         print(f"Error checking errors: {e}")
         return None
 
-# Function to fetch free proxies from a public API
-async def fetch_free_proxies():
-    url = "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all"
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
-            if response.status == 200:
-                proxies = await response.text()
-                return proxies.split("\r\n")  # Split the proxies by newline
-            else:
-                raise Exception("Failed to fetch proxies")
-
-# Function to rotate proxies
-def rotate_proxy(proxies):
-    if not proxies:
-        raise Exception("No proxies available")
-    return random.choice(proxies)
-
 async def get_vtop_data(username: str, password: str, semIndex: Optional[int] = None):
     Alldata = {}
     semId = None  # This will hold the actual semester ID after extraction
     
-    # Fetch free proxies
-    proxies = await fetch_free_proxies()
-    
     async with async_playwright() as p:
         try:
-            # Rotate through proxies
-            proxy = rotate_proxy(proxies)
-            print(f"Using proxy: {proxy}")
-            
             # Using headless mode to reduce rendering overhead
-            browser = await p.chromium.launch(
-                headless=True,
-                proxy={"server": proxy}  # Use the selected proxy
-            )
+            browser = await p.chromium.launch(headless=True)
             context = await browser.new_context(user_agent=random.choice(USER_AGENT_STRINGS))
             page = await context.new_page()
             
