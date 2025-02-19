@@ -66,13 +66,13 @@ chmod +x setup.sh && ./setup.sh
 **Base URL:**
 
 ```http
-GET https://vtop-api-w1ux.onrender.com/vtopdata?username={username}&password={password}
+https://vtop-api-w1ux.onrender.com/vtopdata?username={username}&password={password}
 ```
 
 **Alternate URL:**
 
 ```http
-GET https://vtopapi-production.up.railway.app/vtopdata?username={username}&password={password}
+https://vtopapi-production.up.railway.app/vtopdata?username={username}&password={password}
 ```
 
 **Parameters:**
